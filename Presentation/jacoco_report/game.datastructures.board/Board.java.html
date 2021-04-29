@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Board.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">1</a> &gt; <a href="index.source.html" class="el_package">game.datastructures.board</a> &gt; <span class="el_source">Board.java</span></div><h1>Board.java</h1><pre class="source lang-java linenums">package game.datastructures.board;
+
+import game.datastructures.Policy;
+
+import java.io.Serializable;
+
+public abstract class Board implements Serializable {
+
+<span class="fc" id="L9">    final int FASCIST_POLICIES_TO_WIN = 6;</span>
+<span class="fc" id="L10">    final int LIBERAL_POLICIES_TO_WIN = 5;</span>
+
+    // The minimum number of fascist policies required before
+    // fascists can win by electing Hitler chancellor
+<span class="fc" id="L14">    final int MIN_POLICIES_FOR_CHANCELLOR_VICTORY = 3;</span>
+
+    private int numFascistPolicies;
+    private int numLiberalPolicies;
+
+    private Policy lastEnacted;
+
+
+    /** Constructs a new board.
+     * @modifies this
+     * @effects this is a new, empty board.
+     */
+<span class="fc" id="L26">    public Board() {</span>
+<span class="fc" id="L27">        numFascistPolicies = 0;</span>
+<span class="fc" id="L28">        numLiberalPolicies = 0;</span>
+<span class="fc" id="L29">    }</span>
+
+    /**
+     * Enacts the given policy.
+     * @param policy the Policy to enact.
+     * @throws IllegalStateException if the liberals or fascists have already won.
+     *                               (isLiberalVictory() or isFascistVictory() is true)
+     * @modifies this
+     * @effects adds {@code policy} to the count of liberal and fascist policies.
+     */
+    public void enactPolicy(Policy policy) {
+<span class="pc bpc" id="L40" title="1 of 4 branches missed.">        if (isLiberalVictory() || isFascistVictory()) {</span>
+<span class="fc" id="L41">            throw new IllegalStateException(&quot;Cannot enact a policy when victory conditions were already reached.&quot;);</span>
+        }
+<span class="fc bfc" id="L43" title="All 2 branches covered.">        if (policy.getType() == Policy.Type.FASCIST) {</span>
+<span class="fc" id="L44">            numFascistPolicies++;</span>
+        } else {
+<span class="fc" id="L46">            numLiberalPolicies++;</span>
+        }
+<span class="fc" id="L48">        lastEnacted = policy;</span>
+<span class="fc" id="L49">    }</span>
+
+
+    /**
+     * Gets the type of the last enacted policy.
+     * @throws NullPointerException if no policy has been enacted yet.
+     * @return the Policy.Type of the last policy enacted.
+     */
+    public Policy.Type getLastEnactedType() {
+<span class="pc bpc" id="L58" title="1 of 2 branches missed.">        if (lastEnacted == null) {</span>
+<span class="nc" id="L59">            throw new NullPointerException(&quot;No policy has been enacted yet&quot;);</span>
+        }
+<span class="fc" id="L61">        return lastEnacted.getType();</span>
+    }
+
+
+    /**
+     * Gets the count of fascist policies.
+     * @return the number of fascist policies enacted.
+     */
+    public int getNumFascistPolicies() {
+<span class="fc" id="L70">        return numFascistPolicies;</span>
+    }
+
+
+    /**
+     * Gets the count of liberal policies.
+     * @return the number of liberal policies enacted.
+     */
+    public int getNumLiberalPolicies() {
+<span class="fc" id="L79">        return numLiberalPolicies;</span>
+    }
+
+
+    /**
+     * Determines whether the liberal party won by policy count.
+     * @return true if the number of Liberal Policies {@literal &gt;=} {@code LIBERAL_POLICIES_TO_WIN}
+     */
+    public boolean isLiberalVictory() {
+<span class="fc bfc" id="L88" title="All 2 branches covered.">        return getNumLiberalPolicies() &gt;= LIBERAL_POLICIES_TO_WIN;</span>
+    }
+
+
+    /**
+     * Determines whether the fascist party won by policy count.
+     * @return true if the number of Fascist Policies {@literal &gt;=} {@code FASCIST_POLICIES_TO_WIN}
+     */
+    public boolean isFascistVictory() {
+<span class="fc bfc" id="L97" title="All 2 branches covered.">        return getNumFascistPolicies() &gt;= FASCIST_POLICIES_TO_WIN;</span>
+    }
+
+
+    /**
+     * Gets whether the last policy activated a power.
+     * @requires a policy has already been enacted.
+     * @return true if the last enacted policy activated a presidential power.
+     */
+    public boolean hasActivatedPower() {
+<span class="fc bfc" id="L107" title="All 2 branches covered.">        return getActivatedPower() != PresidentialPower.NONE;</span>
+    }
+
+    /**
+     * Gets the presidential power (if any) that was activated by the last policy.
+     * @requires a policy has already been enacted.
+     * @return If no presidential power was unlocked from the last policy enacted, returns NONE. Otherwise, returns the
+     *         last activated presidential power.
+     */
+    public PresidentialPower getActivatedPower() {
+<span class="nc" id="L117">        return PresidentialPower.NONE;</span>
+    }
+
+    public boolean fascistsCanWinByElection() {
+<span class="fc bfc" id="L121" title="All 2 branches covered.">        return (getNumFascistPolicies() &gt;= MIN_POLICIES_FOR_CHANCELLOR_VICTORY);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

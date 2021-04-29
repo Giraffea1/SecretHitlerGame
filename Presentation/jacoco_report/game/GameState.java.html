@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>GameState.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">1</a> &gt; <a href="index.source.html" class="el_package">game</a> &gt; <span class="el_source">GameState.java</span></div><h1>GameState.java</h1><pre class="source lang-java linenums">package game;
+
+import java.io.Serializable;
+
+<span class="fc" id="L5">public enum GameState implements Serializable {</span>
+<span class="fc" id="L6">    SETUP,                          // Game is being set up.</span>
+<span class="fc" id="L7">    CHANCELLOR_NOMINATION,          // President is nominating a chancellor.</span>
+<span class="fc" id="L8">    CHANCELLOR_VOTING,              // Voting on the chancellor is taking place.</span>
+<span class="fc" id="L9">    LEGISLATIVE_PRESIDENT,          // In the legislative phase. The president is selecting a card to discard.</span>
+<span class="fc" id="L10">    LEGISLATIVE_CHANCELLOR,         // In the legislative phase. The chancellor is selecting a card to enact.</span>
+<span class="fc" id="L11">    LEGISLATIVE_PRESIDENT_VETO,     // Chancellor decided to initiate veto, President chooses whether to allow.</span>
+<span class="fc" id="L12">    PRESIDENTIAL_POWER_PEEK,        // President may peek at the next three cards in the deck</span>
+<span class="fc" id="L13">    PRESIDENTIAL_POWER_INVESTIGATE, // President can investigate a party membership</span>
+<span class="fc" id="L14">    PRESIDENTIAL_POWER_EXECUTION,   // President may choose a player to execute</span>
+<span class="fc" id="L15">    PRESIDENTIAL_POWER_ELECTION,    // President chooses the next president, seat continues as normal after.</span>
+<span class="fc" id="L16">    POST_LEGISLATIVE,               // Waiting for the President to end their turn.</span>
+<span class="fc" id="L17">    LIBERAL_VICTORY_POLICY,         // Liberal Party won through enacting Liberal policies.</span>
+<span class="fc" id="L18">    LIBERAL_VICTORY_EXECUTION,      // Liberal Party won through executing Hitler.</span>
+<span class="fc" id="L19">    FASCIST_VICTORY_POLICY,         // Fascist Party won through enacting Fascist policies.</span>
+<span class="fc" id="L20">    FASCIST_VICTORY_ELECTION        // Fascist Party won by successfully electing Hitler chancellor.</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

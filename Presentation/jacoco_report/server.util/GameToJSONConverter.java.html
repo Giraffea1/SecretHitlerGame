@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>GameToJSONConverter.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">1</a> &gt; <a href="index.source.html" class="el_package">server.util</a> &gt; <span class="el_source">GameToJSONConverter.java</span></div><h1>GameToJSONConverter.java</h1><pre class="source lang-java linenums">package server.util;
+
+import game.GameState;
+import game.SecretHitlerGame;
+import game.datastructures.Player;
+import game.datastructures.Policy;
+import org.json.JSONObject;
+
+import java.util.List;
+/**
+ * Converts a SecretHitlerGame to a JSONObject that represents the game state.
+ */
+<span class="fc" id="L13">public class GameToJSONConverter {</span>
+    public static final String HITLER = &quot;HITLER&quot;;
+    public static final String FASCIST = &quot;FASCIST&quot;;
+    public static final String LIBERAL = &quot;LIBERAL&quot;;
+
+    /**
+     * Creates a JSON object from a SecretHitlerGame that represents its state.
+     * @param game the SecretHitlerGame to convert.
+     * @throws NullPointerException if {@code game} is null.
+     * @return a JSONObject with the following properties:
+     *          {@code state}: the state of the game.
+     *          {@code player-order}: an array of names representing the order of the players in the game.
+     *
+     *          {@code players}: a JSONObject map, with keys that are a player's {@code username}.
+     *              Each {@code username} key maps to an object with the properties {@code id} (String),
+     *              {@code alive} (boolean), and {@code investigated} (boolean), to represent the player.
+     *              The identity is either this.HITLER, this.FASCIST, or this.LIBERAL.
+     *              Ex: {&quot;player1&quot;:{&quot;alive&quot;: true, &quot;investigated&quot;: false, &quot;id&quot;: &quot;LIBERAL&quot;}}.
+     *
+     *          {@code president}: the username of the current president.
+     *          {@code chancellor}: the username of the current chancellor (can be null).
+     *          {@code last-president}: The username of the last president that presided over a legislative session.
+     *          {@code last-chancellor}: The username of the last chancellor that presided over a legislative session.
+     *          {@code draw-size}: The size of the draw deck.
+     *          {@code discard-size}: The size of the discard deck.
+     *          {@code fascist-policies}: The number of passed fascist policies.
+     *          {@code liberal-policies}: The number of passed liberal policies.:
+     *          {@code user-votes}: A map from each user to their vote from the last chancellor nomination.
+     *          {@code president-choices}: The choices for the president during the legislative session (only if in
+     *                  game state LEGISLATIVE_PRESIDENT).
+     *          {@code chancellor-choices}: The choices for the chancellor during the legislative session (only if in
+     *                  game state LEGISLATIVE_CHANCELLOR).
+     */
+    public static JSONObject convert(SecretHitlerGame game) {
+<span class="fc bfc" id="L47" title="All 2 branches covered.">        if (game == null) {</span>
+<span class="fc" id="L48">            throw new NullPointerException();</span>
+        }
+
+<span class="fc" id="L51">        JSONObject out = new JSONObject();</span>
+<span class="fc" id="L52">        JSONObject playerData = new JSONObject();</span>
+<span class="fc" id="L53">        String[] playerOrder = new String[game.getPlayerList().size()];</span>
+<span class="fc" id="L54">        List&lt;Player&gt; playerList = game.getPlayerList();</span>
+
+<span class="fc bfc" id="L56" title="All 2 branches covered.">        for (int i = 0; i &lt; playerList.size(); i++) {</span>
+<span class="fc" id="L57">            JSONObject playerObj = new JSONObject();</span>
+<span class="fc" id="L58">            Player player = playerList.get(i);</span>
+
+<span class="fc" id="L60">            playerObj.put(&quot;alive&quot;, player.isAlive());</span>
+
+<span class="fc" id="L62">            String id = LIBERAL;</span>
+<span class="fc bfc" id="L63" title="All 2 branches covered.">            if (player.isHitler()) {</span>
+<span class="fc" id="L64">                id = HITLER;</span>
+<span class="fc bfc" id="L65" title="All 2 branches covered.">            } else if (player.isFascist()) {</span>
+<span class="fc" id="L66">                id = FASCIST;</span>
+            }
+<span class="fc" id="L68">            playerObj.put(&quot;id&quot;, id);</span>
+<span class="fc" id="L69">            playerObj.put(&quot;investigated&quot;, player.hasBeenInvestigated());</span>
+
+<span class="fc" id="L71">            playerData.put(player.getUsername(), playerObj);</span>
+<span class="fc" id="L72">            playerOrder[i] = player.getUsername();</span>
+        }
+
+<span class="fc" id="L75">        out.put(&quot;players&quot;, playerData);</span>
+<span class="fc" id="L76">        out.put(&quot;player-order&quot;, playerOrder);</span>
+
+<span class="fc" id="L78">        out.put(&quot;president&quot;, game.getCurrentPresident());</span>
+<span class="fc" id="L79">        out.put(&quot;chancellor&quot;, game.getCurrentChancellor());</span>
+<span class="fc" id="L80">        out.put(&quot;state&quot;, game.getState().toString());</span>
+<span class="fc" id="L81">        out.put(&quot;last-state&quot;, game.getLastState().toString());</span>
+<span class="fc" id="L82">        out.put(&quot;last-president&quot;, game.getLastPresident());</span>
+<span class="fc" id="L83">        out.put(&quot;last-chancellor&quot;, game.getLastChancellor());</span>
+<span class="fc" id="L84">        out.put(&quot;target-user&quot;, game.getTarget());</span>
+
+<span class="fc" id="L86">        out.put(&quot;election-tracker&quot;, game.getElectionTracker());</span>
+<span class="fc" id="L87">        out.put(&quot;election-tracker-advanced&quot;, game.didElectionTrackerAdvance());</span>
+
+<span class="fc" id="L89">        out.put(&quot;draw-size&quot;, game.getDrawSize());</span>
+<span class="fc" id="L90">        out.put(&quot;discard-size&quot;, game.getDiscardSize());</span>
+<span class="fc" id="L91">        out.put(&quot;fascist-policies&quot;, game.getNumFascistPolicies());</span>
+<span class="fc" id="L92">        out.put(&quot;liberal-policies&quot;, game.getNumLiberalPolicies());</span>
+<span class="fc" id="L93">        out.put(&quot;user-votes&quot;, game.getVotes());</span>
+
+<span class="pc bpc" id="L95" title="1 of 2 branches missed.">        if (game.getState() == GameState.LEGISLATIVE_PRESIDENT) {</span>
+<span class="nc" id="L96">            out.put(&quot;president-choices&quot;, convertPolicyListToStringArray(game.getPresidentLegislativeChoices()));</span>
+        }
+<span class="pc bpc" id="L98" title="1 of 2 branches missed.">        if (game.getState() == GameState.LEGISLATIVE_CHANCELLOR) {</span>
+<span class="nc" id="L99">            out.put(&quot;chancellor-choices&quot;, convertPolicyListToStringArray(game.getChancellorLegislativeChoices()));</span>
+        }
+<span class="pc bpc" id="L101" title="1 of 2 branches missed.">        if (game.getState() == GameState.PRESIDENTIAL_POWER_PEEK) {</span>
+<span class="nc" id="L102">            out.put(&quot;peek&quot;, convertPolicyListToStringArray(game.getPeek()));</span>
+        }
+
+<span class="fc" id="L105">        return out;</span>
+    }
+
+    /**
+     * Converts a list of policies into a string array.
+     * @param list the list of policies.
+     * @return a string array with the same length as the list, where each index is either &quot;FASCIST&quot; or &quot;LIBERAL&quot;
+     *         according to the type of the Policy at that index in the list.
+     */
+    public static String[] convertPolicyListToStringArray(List&lt;Policy&gt; list) {
+<span class="fc" id="L115">        String[] out = new String[list.size()];</span>
+<span class="fc bfc" id="L116" title="All 2 branches covered.">        for(int i = 0; i &lt; list.size(); i++) {</span>
+<span class="fc" id="L117">            out[i] = list.get(i).getType().toString();</span>
+        }
+<span class="fc" id="L119">        return out;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Deck.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">1</a> &gt; <a href="index.source.html" class="el_package">game.datastructures</a> &gt; <span class="el_source">Deck.java</span></div><h1>Deck.java</h1><pre class="source lang-java linenums">package game.datastructures;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+/**
+ * A deck holds an ordered list of Policies and can be shuffled, added to, or removed from.
+ * The Deck can be represented by a list of policies, where index i = 0 is the top of the deck.
+ */
+public class Deck implements Serializable {
+
+    // The front of the list is the &quot;top&quot; of the deck.
+    final private List&lt;Policy&gt; deck;
+
+    /**
+     * Constructs a new empty deck.
+     * @modifies this
+     * @effects this is a new deck with no Policies.
+     */
+<span class="fc" id="L22">    public Deck() {</span>
+<span class="fc" id="L23">        deck = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L24">    }</span>
+
+    /**
+     * Removes the Policy from the top of the deck.
+     * @throws IndexOutOfBoundsException if the deck is empty.
+     * @modifies this
+     * @effects removes the Policy from the top of the deck.
+     * @return the Policy that was at the top of the deck.
+     */
+    public Policy remove() {
+<span class="fc bfc" id="L34" title="All 2 branches covered.">        if (isEmpty()) {</span>
+<span class="fc" id="L35">            throw new IndexOutOfBoundsException(&quot;Cannot remove a card from an empty deck.&quot;);</span>
+        }
+<span class="fc" id="L37">        return deck.remove(0);</span>
+    }
+
+    /**
+     * Adds the given Policy to the top of the deck.
+     * @param newPolicy the Policy to add to the deck.
+     * @modifies this
+     * @effects adds the given Policy to the deck at index 0.
+     */
+    public void add(Policy newPolicy) {
+<span class="fc" id="L47">        deck.add(0, newPolicy);</span>
+<span class="fc" id="L48">    }</span>
+
+    /**
+     * Peeks at a Policy in the deck.
+     * @param index the index of the Policy in the deck, where {@code index} = 0 is the top of the deck.
+     * @throws IndexOutOfBoundsException if {@code index} {@literal &lt;} 0 or {@code index} {@literal &gt;=} this.getSize()
+     * @return the Policy at the given index.
+     */
+    public Policy peek(int index) {
+<span class="fc" id="L57">        return deck.get(index);</span>
+    }
+
+    public boolean isEmpty() {
+<span class="fc bfc" id="L61" title="All 2 branches covered.">        return getSize() == 0;</span>
+    }
+
+    /**
+     * Gets the number of Policy cards
+     * @return the size of the deck.
+     */
+    public int getSize() {
+<span class="fc" id="L69">        return deck.size();</span>
+    }
+
+    /**
+     * Shuffles the deck.
+     * @effects Randomizes the ordering of the policy cards in this Deck.
+     */
+    public void shuffle() {
+<span class="fc" id="L77">        Collections.shuffle(deck);</span>
+<span class="fc" id="L78">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

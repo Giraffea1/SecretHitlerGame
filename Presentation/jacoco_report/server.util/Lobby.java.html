@@ -1,0 +1,390 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Lobby.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">1</a> &gt; <a href="index.source.html" class="el_package">server.util</a> &gt; <span class="el_source">Lobby.java</span></div><h1>Lobby.java</h1><pre class="source lang-java linenums">package server.util;
+
+import game.GameState;
+import game.SecretHitlerGame;
+import io.javalin.websocket.WsContext;
+import org.json.JSONObject;
+import server.SecretHitlerServer;
+
+import java.io.IOException;
+import java.io.Serializable;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.ConcurrentSkipListSet;
+
+/**
+ * A Lobby holds a collection of websocket connections, each representing a player.
+ * It maintains the game that the connections are associated with.
+ *
+ * A user is defined as an active websocket connection.
+ */
+public class Lobby implements Serializable {
+
+    private SecretHitlerGame game;
+    // These two marked transient because they track currently active/connected users.
+    transient private ConcurrentHashMap&lt;WsContext, String&gt; userToUsername;
+    transient private ConcurrentLinkedQueue&lt;String&gt; activeUsernames;
+    final private ConcurrentSkipListSet&lt;String&gt; usersInGame;
+    final private ConcurrentHashMap&lt;String, String&gt; usernameToIcon;
+    // Used to reassign users to previously chosen images if they disconnect
+    final private ConcurrentHashMap&lt;String, String&gt; usernameToPreferredIcon;
+
+<span class="fc" id="L33">    public static long LOBBY_TIMEOUT_DURATION_IN_MIN = 30;</span>
+<span class="fc" id="L34">    public static float PLAYER_TIMEOUT_IN_SEC = 3;</span>
+    private long timeout;
+<span class="fc" id="L36">    private static int MAX_TIMER_SCHEDULING_ATTEMPTS = 2;</span>
+<span class="fc" id="L37">    transient private Timer timer = new Timer();</span>
+
+<span class="fc" id="L39">    static String DEFAULT_ICON = &quot;p_default&quot;;</span>
+
+    /**
+     * Constructs a new Lobby.
+     */
+<span class="fc" id="L44">    public Lobby() {</span>
+<span class="fc" id="L45">        userToUsername = new ConcurrentHashMap&lt;&gt;();</span>
+<span class="fc" id="L46">        activeUsernames = new ConcurrentLinkedQueue&lt;&gt;();</span>
+<span class="fc" id="L47">        usersInGame = new ConcurrentSkipListSet&lt;&gt;();</span>
+<span class="fc" id="L48">        usernameToIcon = new ConcurrentHashMap&lt;&gt;();</span>
+<span class="fc" id="L49">        usernameToPreferredIcon = new ConcurrentHashMap&lt;&gt;();</span>
+<span class="fc" id="L50">        resetTimeout();</span>
+<span class="fc" id="L51">    }</span>
+
+    /**
+     * Resets the internal timeout for this.
+     * @effects The lobby will time out in {@code TIMEOUT_DURATION_MS} ms from now.
+     */
+    synchronized public void resetTimeout() {
+        // The timeout duration for the server. (currently 30 minutes)
+<span class="fc" id="L59">            long MS_PER_MINUTE = 1000 * 60;</span>
+<span class="fc" id="L60">            timeout = System.currentTimeMillis() + MS_PER_MINUTE * LOBBY_TIMEOUT_DURATION_IN_MIN;</span>
+<span class="fc" id="L61">    }</span>
+
+    /**
+     * Returns whether the lobby has timed out.
+     * @return true if the Lobby has timed out.
+     */
+    synchronized public boolean hasTimedOut() {
+<span class="pc bpc" id="L68" title="1 of 2 branches missed.">        return timeout &lt;= System.currentTimeMillis();</span>
+    }
+
+    /**
+     * Returns the set of websocket connections connected to this Lobby.
+     * @return a set of WsContexts, where each context is a user connected to the Lobby.
+     */
+    synchronized public Set&lt;WsContext&gt; getConnections() {
+<span class="nc" id="L76">        return userToUsername.keySet();</span>
+    }
+
+    /////// User Management
+    //&lt;editor-fold desc=&quot;User Management&quot;&gt;
+
+    /**
+     * Returns whether the given user (websocket connection) is in this lobby
+     * @param context the Websocket context of a user.
+     * @return true iff the {@code context} is in this lobby.
+     */
+    synchronized public boolean hasUser(WsContext context) {
+<span class="nc" id="L88">        return userToUsername.containsKey(context);</span>
+    }
+
+    /**
+     * Returns whether a user with the given name exists in this lobby.
+     * @param context the Websocket context of the user.
+     * @param name the name of the user.
+     * @return true iff {@code context} is a user in the lobby with the name {@code name}.
+     */
+<span class="nc bnc" id="L97" title="All 4 branches missed.">    synchronized public boolean hasUser(WsContext context, String name) {return userToUsername.containsKey(context) &amp;&amp; userToUsername.get(context).equals(name); }</span>
+
+    /**
+     * Returns true if the lobby has a user with a given username.
+     * @param name the username to check the Lobby for.
+     * @return true iff the username {@code name} is in this lobby.
+     */
+    synchronized public boolean hasUserWithName(String name) {
+<span class="fc" id="L105">        return userToUsername.values().contains(name);</span>
+    }
+
+    /**
+     * Checks if a user can be added back to the lobby while a game is running.
+     * @param name the name of the user to add.
+     * @return true if the user can be added. A user can only be added back if they were in the current game but were then
+     *         removed from the lobby.
+     *
+     */
+    synchronized public boolean canAddUserDuringGame(String name) {
+<span class="nc bnc" id="L116" title="All 4 branches missed.">        return (usersInGame.contains(name) &amp;&amp; !activeUsernames.contains(name)); // the user was in the game but was disconnected.</span>
+    }
+
+    /**
+     * Checks whether the lobby is full.
+     * @return Returns true if the number of players in the lobby is {@literal &gt;= } {@code SecretHitlerGame.MAX_PLAYERS}.
+     */
+    synchronized public boolean isFull() {
+<span class="pc bpc" id="L124" title="1 of 2 branches missed.">        return activeUsernames.size() &gt;= SecretHitlerGame.MAX_PLAYERS;</span>
+    }
+
+    /**
+     * Adds a user (websocket connection) to the lobby.
+     * @param context the websocket connection context.
+     * @param name the name of the player to be added.
+     * @throws IllegalArgumentException if a duplicate websocket is added, if there is already a websocket with the
+     *         given name in the game, if the lobby is full, if the player has a duplicate name,
+     *         or if a new player is added during a game.
+     * @modifies this
+     * @effects adds the given user to the lobby.
+     *          If the game has already started, the player can only join if a player with the name {@name} was
+     *          previously in the same game but was removed.
+     */
+    synchronized public void addUser(WsContext context, String name) {
+<span class="nc bnc" id="L140" title="All 2 branches missed.">        if(userToUsername.containsKey(context)) {</span>
+<span class="nc" id="L141">            throw new IllegalArgumentException(&quot;Duplicate websockets cannot be added to a lobby.&quot;);</span>
+        } else {
+<span class="nc bnc" id="L143" title="All 2 branches missed.">            if (isInGame()) {</span>
+<span class="nc bnc" id="L144" title="All 2 branches missed.">                if(canAddUserDuringGame(name)) { // This username is in the game but is not currently connected.</span>
+                    // allow the user to be connected.
+<span class="nc" id="L146">                    userToUsername.put(context, name);</span>
+
+<span class="nc" id="L148">                    usernameToIcon.put(name, DEFAULT_ICON); // load default icon</span>
+                    // Try setting the player's icon using their previous choice
+<span class="nc bnc" id="L150" title="All 2 branches missed.">                    if (usernameToPreferredIcon.containsKey(name)) {</span>
+<span class="nc" id="L151">                        String iconID = usernameToPreferredIcon.get(name);</span>
+<span class="nc" id="L152">                        trySetUserIcon(iconID, context);</span>
+<span class="nc" id="L153">                    }</span>
+                } else {
+<span class="nc" id="L155">                    throw new IllegalArgumentException(&quot;Cannot add a new player to a lobby currently in a game.&quot;);</span>
+                }
+            } else {
+<span class="nc bnc" id="L158" title="All 2 branches missed.">                if (!isFull()) {</span>
+<span class="nc bnc" id="L159" title="All 2 branches missed.">                    if (!hasUserWithName(name)) { // This is a new user with a new name, so we add them to the Lobby.</span>
+<span class="nc" id="L160">                        userToUsername.put(context, name);</span>
+<span class="nc bnc" id="L161" title="All 2 branches missed.">                        if (!activeUsernames.contains(name)) {</span>
+<span class="nc" id="L162">                            activeUsernames.add(name);</span>
+                        }
+                        // Set icon to default
+<span class="nc" id="L165">                        usernameToIcon.put(name, DEFAULT_ICON);</span>
+                        // Attempt to retrieve previous icon (if it exists)
+<span class="nc bnc" id="L167" title="All 2 branches missed.">                        if (usernameToPreferredIcon.containsKey(name)) {</span>
+<span class="nc" id="L168">                            String iconID = usernameToPreferredIcon.get(name);</span>
+<span class="nc" id="L169">                            trySetUserIcon(iconID, context);</span>
+<span class="nc" id="L170">                        }</span>
+                    } else {
+<span class="nc" id="L172">                        throw new IllegalArgumentException(&quot;Cannot add duplicate names.&quot;);</span>
+                    }
+                } else {
+<span class="nc" id="L175">                    throw new IllegalArgumentException(&quot;Cannot add the player because the lobby is full.&quot;);</span>
+                }
+            }
+        }
+<span class="nc" id="L179">    }</span>
+
+    /**
+     * Removes a user from the Lobby.
+     * @param context the websocket connection context of the player to remove.
+     * @throws IllegalArgumentException if {@code context} is not a user in the Lobby.
+     * @modifies this
+     * @effects removes the user context (websocket connection) of the player from the lobby.
+     */
+    synchronized public void removeUser(WsContext context) {
+<span class="nc bnc" id="L189" title="All 2 branches missed.">        if (!hasUser(context)) {</span>
+<span class="nc" id="L190">            throw new IllegalArgumentException(&quot;Cannot remove a websocket that is not in the Lobby.&quot;);</span>
+        } else {
+            // Delay removing players from the list by adding it to a timer.
+<span class="nc" id="L193">            int delay_in_ms = (int) (PLAYER_TIMEOUT_IN_SEC * 1000);</span>
+<span class="nc" id="L194">            final String username = userToUsername.get(context);</span>
+
+<span class="nc" id="L196">            int timerSchedulingAttempts = 0;</span>
+<span class="nc bnc" id="L197" title="All 2 branches missed.">            while (timerSchedulingAttempts &lt; MAX_TIMER_SCHEDULING_ATTEMPTS) {</span>
+                try {
+<span class="nc" id="L199">                    timer.schedule(new RemoveUserTask(username), delay_in_ms);</span>
+<span class="nc" id="L200">                    break; // exit loop if successful</span>
+<span class="nc" id="L201">                } catch (IllegalStateException e) {</span>
+                    // Timer hit an error state and must be reset.
+<span class="nc" id="L203">                    timer.cancel();</span>
+<span class="nc" id="L204">                    timer = new Timer();</span>
+<span class="nc" id="L205">                    timerSchedulingAttempts++;</span>
+<span class="nc" id="L206">                }</span>
+            }
+<span class="nc bnc" id="L208" title="All 2 branches missed.">            if (timerSchedulingAttempts == MAX_TIMER_SCHEDULING_ATTEMPTS) {</span>
+<span class="nc" id="L209">                System.out.println(&quot;Failed to schedule removal of the user '&quot; + username + &quot;'.&quot;);</span>
+            }
+
+<span class="nc" id="L212">            userToUsername.remove(context);</span>
+        }
+<span class="nc" id="L214">    }</span>
+
+    /**
+     * Small helper class for removing users from the active users queue.
+     */
+    class RemoveUserTask extends TimerTask {
+        private final String username;
+
+<span class="nc" id="L222">        RemoveUserTask(String username) { this.username = username; }</span>
+
+        public void run() {
+<span class="nc bnc" id="L225" title="All 4 branches missed.">            if (!userToUsername.values().contains(username) &amp;&amp; activeUsernames.contains(username)) {</span>
+<span class="nc" id="L226">                activeUsernames.remove(username);</span>
+
+<span class="nc bnc" id="L228" title="All 2 branches missed.">                if (usernameToIcon.containsKey(username)) {</span>
+<span class="nc" id="L229">                    usernameToIcon.remove(username);  // possible for users to disconnect before choosing icon</span>
+                }
+<span class="nc" id="L231">                updateAllUsers();</span>
+            }
+<span class="nc" id="L233">        }</span>
+    }
+
+    /**
+     * Returns the number of active users connected to the Lobby.
+     * @return the number of active websocket connections currently in the lobby.
+     */
+    synchronized public int getUserCount() {
+<span class="nc" id="L241">        return activeUsernames.size();</span>
+    }
+
+    /**
+     * Sends a message to every connected user with the current game state.
+     * @effects a message containing a JSONObject representing the state of the SecretHitlerGame is sent
+     *          to each connected WsContext. ({@code GameToJSONConverter.convert()})
+     */
+    synchronized public void updateAllUsers() {
+<span class="nc bnc" id="L250" title="All 2 branches missed.">        for (WsContext ws : userToUsername.keySet()) {</span>
+<span class="nc" id="L251">            updateUser(ws);</span>
+<span class="nc" id="L252">        }</span>
+        //Check if the game ended.
+<span class="nc bnc" id="L254" title="All 4 branches missed.">        if (game != null &amp;&amp; (game.getState() == GameState.FASCIST_VICTORY_ELECTION</span>
+<span class="nc bnc" id="L255" title="All 2 branches missed.">                || game.getState() == GameState.FASCIST_VICTORY_POLICY</span>
+<span class="nc bnc" id="L256" title="All 2 branches missed.">                || game.getState() == GameState.LIBERAL_VICTORY_EXECUTION</span>
+<span class="nc bnc" id="L257" title="All 2 branches missed.">                || game.getState() == GameState.LIBERAL_VICTORY_POLICY)) {</span>
+<span class="nc" id="L258">            game = null;</span>
+        }
+<span class="nc" id="L260">    }</span>
+
+    /**
+     * Sends a message to the specified user with the current game state.
+     * @param ctx the WsContext websocket context.
+     * @effects a message containing a JSONObject representing the state of the SecretHitlerGame is sent
+     *          to the specified WsContext. ({@code GameToJSONConverter.convert()})
+     */
+    synchronized public void updateUser(WsContext ctx) {
+        JSONObject message;
+<span class="nc bnc" id="L270" title="All 2 branches missed.">        if (isInGame()) {</span>
+<span class="nc" id="L271">            message = GameToJSONConverter.convert(game); // sends the game state</span>
+<span class="nc" id="L272">            message.put(SecretHitlerServer.PARAM_PACKET_TYPE, SecretHitlerServer.PACKET_GAME_STATE);</span>
+        } else {
+<span class="nc" id="L274">            message = new JSONObject();</span>
+<span class="nc" id="L275">            message.put(SecretHitlerServer.PARAM_PACKET_TYPE, SecretHitlerServer.PACKET_LOBBY);</span>
+<span class="nc" id="L276">            message.put(&quot;user-count&quot;, getUserCount());</span>
+<span class="nc" id="L277">            message.put(&quot;usernames&quot;, activeUsernames.toArray());</span>
+        }
+        // Add user icons to the update message
+<span class="nc" id="L280">        JSONObject icons = new JSONObject(usernameToIcon);</span>
+<span class="nc" id="L281">        message.put(&quot;icon&quot;, icons);</span>
+
+<span class="nc" id="L283">        ctx.send(message.toString());</span>
+<span class="nc" id="L284">    }</span>
+
+    /**
+     * Called when an object is deserialized (see Serializable in Java docs).
+     * Initializes the userToUsername and activeUsernames, as they are transient objects and not saved during
+     * serialization of Lobby.
+     * @param in the Object Input Stream that is reading in the object.
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
+    private void readObject(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException {
+<span class="nc" id="L295">        in.defaultReadObject();</span>
+<span class="nc" id="L296">        userToUsername = new ConcurrentHashMap&lt;&gt;();</span>
+<span class="nc" id="L297">        activeUsernames = new ConcurrentLinkedQueue&lt;&gt;();</span>
+<span class="nc" id="L298">        timer = new Timer();</span>
+<span class="nc" id="L299">    }</span>
+
+    /**
+     * Attempts to set the player's icon to the given iconID and returns whether it was set.
+     * @param iconID the ID of the new icon to give the player.
+     * @param user the user to change the icon of.
+     * @effects If no other user has the given {@code iconID}, sets the icon of the {@code user}
+     *          to {@code iconID}. (exception is for the default value.)
+     * @throws IllegalArgumentException if {@code user} is not in the game.
+     */
+    synchronized public void trySetUserIcon(String iconID, WsContext user) {
+        // Verify that the user exists.
+<span class="nc bnc" id="L311" title="All 2 branches missed.">        if (!hasUser(user)) {</span>
+<span class="nc" id="L312">            throw new IllegalArgumentException(&quot;User is not in this lobby.&quot;);</span>
+        }
+
+<span class="nc" id="L315">        String username = userToUsername.get(user);</span>
+        // Verify that no user has the same icon
+<span class="nc bnc" id="L317" title="All 2 branches missed.">        if (!iconID.equals(DEFAULT_ICON)) {  // all icons other than the default cannot be shared.</span>
+<span class="nc bnc" id="L318" title="All 2 branches missed.">            for (String name : userToUsername.values()) {</span>
+<span class="nc bnc" id="L319" title="All 4 branches missed.">                if (usernameToIcon.containsKey(name) &amp;&amp; usernameToIcon.get(name).equals(iconID)) {</span>
+<span class="nc" id="L320">                    return;</span>
+                }
+<span class="nc" id="L322">            }</span>
+        }
+
+<span class="nc" id="L325">        usernameToIcon.put(username, iconID);</span>
+<span class="nc" id="L326">        usernameToPreferredIcon.put(username, iconID);</span>
+<span class="nc" id="L327">    }</span>
+
+    //&lt;/editor-fold&gt;
+
+    ////// Game Management
+    //&lt;editor-fold desc=&quot;Game Management&quot;&gt;
+
+    /**
+     * Returns whether the Lobby is currently in a game.
+     * @return true iff the Lobby has a currently active game.
+     */
+    synchronized public boolean isInGame() {
+<span class="pc bpc" id="L339" title="1 of 2 branches missed.">        return game != null;</span>
+    }
+
+    /**
+     * Starts a new SecretHitlerGame with the connected users as players.
+     * @throws RuntimeException if there are an insufficient number of players to start a game, if there are too
+     *         many in the lobby, or if the lobby is in a game ({@code isInGame() == true}). Also throws exception if
+     *         not all players have selected an icon.
+     * @modifies this
+     * @effects creates and stores a new SecretHitlerGame.
+     *          The usernames of all active users are added to the game in a randomized order.
+     */
+    synchronized public void startNewGame() {
+<span class="nc bnc" id="L352" title="All 2 branches missed.">        if (userToUsername.size() &lt; SecretHitlerGame.MIN_PLAYERS) {</span>
+<span class="nc" id="L353">            throw new RuntimeException(&quot;Too many users to start a game.&quot;);</span>
+<span class="nc bnc" id="L354" title="All 2 branches missed.">        } else if (userToUsername.size() &gt; SecretHitlerGame.MAX_PLAYERS) {</span>
+<span class="nc" id="L355">            throw new RuntimeException(&quot;Too many users to start a game.&quot;);</span>
+<span class="nc bnc" id="L356" title="All 2 branches missed.">        } else if (isInGame()) {</span>
+<span class="nc" id="L357">            throw new RuntimeException(&quot;Cannot start a new game while a game is in progress.&quot;);</span>
+        }
+
+        // Check that all players have (non-default) icons set.
+<span class="nc bnc" id="L361" title="All 2 branches missed.">        for (String username : userToUsername.values()) {</span>
+<span class="nc bnc" id="L362" title="All 2 branches missed.">            if (usernameToIcon.get(username).equals(DEFAULT_ICON)) {</span>
+<span class="nc" id="L363">                throw new RuntimeException(&quot;Not all players have selected icons.&quot;);</span>
+            }
+<span class="nc" id="L365">        }</span>
+
+<span class="nc" id="L367">        usersInGame.clear();</span>
+<span class="nc" id="L368">        usersInGame.addAll(userToUsername.values());</span>
+<span class="nc" id="L369">        List&lt;String&gt; playerNames = new ArrayList&lt;&gt;(userToUsername.values());</span>
+<span class="nc" id="L370">        Collections.shuffle(playerNames);</span>
+<span class="nc" id="L371">        game = new SecretHitlerGame(playerNames);</span>
+<span class="nc" id="L372">    }</span>
+
+    /**
+     * Returns the current game.
+     * @throws RuntimeException if called when there is no active game ({@code !this.isInGame()}).
+     * @return the SecretHitlerGame for this lobby.
+     */
+    synchronized public SecretHitlerGame game() {
+<span class="nc bnc" id="L380" title="All 2 branches missed.">        if (game == null) {</span>
+<span class="nc" id="L381">            throw new RuntimeException();</span>
+        } else {
+<span class="nc" id="L383">            return game;</span>
+        }
+    }
+
+    //&lt;/editor-fold&gt;
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

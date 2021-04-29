@@ -1,0 +1,1118 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="../style.css">
+</head>
+<body>
+
+
+<h1>Player.java</h1>
+
+<table class="src">
+
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@6a9d572_1'/>
+1
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@6a9d572_1'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>package game.datastructures;</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@6a9d572_2'/>
+2
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@6a9d572_2'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@6a9d572_3'/>
+3
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@6a9d572_3'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>import org.json.JSONObject;</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@6a9d572_4'/>
+4
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@6a9d572_4'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@6a9d572_5'/>
+5
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@6a9d572_5'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>import java.io.Serializable;</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@6a9d572_6'/>
+6
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@6a9d572_6'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@6a9d572_7'/>
+7
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@6a9d572_7'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>/**</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@6a9d572_8'/>
+8
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@6a9d572_8'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * Holds the data for an individual player.</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@6a9d572_9'/>
+9
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@6a9d572_9'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * A player has a username and identity associated with them.</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@6a9d572_10'/>
+10
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@6a9d572_10'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> */</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@6a9d572_11'/>
+11
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@6a9d572_11'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>public class Player implements Serializable {</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@6a9d572_12'/>
+12
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@6a9d572_12'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@6a9d572_13'/>
+13
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@6a9d572_13'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    final private String username;</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@6a9d572_14'/>
+14
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@6a9d572_14'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    private Identity id;</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@6a9d572_15'/>
+15
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@6a9d572_15'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    private boolean isAlive;</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@6a9d572_16'/>
+16
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@6a9d572_16'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    private boolean investigated;</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@6a9d572_17'/>
+17
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@6a9d572_17'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@6a9d572_18'/>
+18
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@6a9d572_18'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    /**</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@6a9d572_19'/>
+19
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@6a9d572_19'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * Constructs a new Player with the given username.</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@6a9d572_20'/>
+20
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@6a9d572_20'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * @param username The username of the player.</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@6a9d572_21'/>
+21
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@6a9d572_21'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * @modifies this</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@6a9d572_22'/>
+22
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@6a9d572_22'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * @effects this is a new Player that is alive, has an unassigned Identity,</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@6a9d572_23'/>
+23
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@6a9d572_23'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     *          and has not been investigated.</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@6a9d572_24'/>
+24
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@6a9d572_24'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     */</span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@6a9d572_25'/>
+25
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@6a9d572_25'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>    public Player(String username) {</span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@6a9d572_26'/>
+26
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@6a9d572_26'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>        this.username = username;</span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@6a9d572_27'/>
+27
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@6a9d572_27'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>        id = Identity.UNASSIGNED;</span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@6a9d572_28'/>
+28
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@6a9d572_28'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>        isAlive = true;</span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@6a9d572_29'/>
+29
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@6a9d572_29'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>        investigated = false;</span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@6a9d572_30'/>
+30
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@6a9d572_30'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>    }</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@6a9d572_31'/>
+31
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@6a9d572_31'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@6a9d572_32'/>
+32
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@6a9d572_32'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    public String getUsername() {</span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@6a9d572_33'/>
+33
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@6a9d572_33'>1</a>
+<span>
+1. getUsername : replaced return value with &#34;&#34; for game/datastructures/Player::getUsername &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>        return this.username;</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@6a9d572_34'/>
+34
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@6a9d572_34'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    }</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@6a9d572_35'/>
+35
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@6a9d572_35'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@6a9d572_36'/>
+36
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@6a9d572_36'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    /**</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@6a9d572_37'/>
+37
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@6a9d572_37'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * Sets the player&#39;s identity.</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@6a9d572_38'/>
+38
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@6a9d572_38'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * @param id the Identity of the player.</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@6a9d572_39'/>
+39
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@6a9d572_39'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * @throws IllegalArgumentException if {@code id} is null</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@6a9d572_40'/>
+40
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@6a9d572_40'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * @modifies this</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@6a9d572_41'/>
+41
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@6a9d572_41'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * @effects sets the player&#39;s identity to {@code id}.</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@6a9d572_42'/>
+42
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@6a9d572_42'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     */</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@6a9d572_43'/>
+43
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@6a9d572_43'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    public void setIdentity(Identity id) {</span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@6a9d572_44'/>
+44
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@6a9d572_44'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>        this.id = id;</span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@6a9d572_45'/>
+45
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@6a9d572_45'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>    }</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@6a9d572_46'/>
+46
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@6a9d572_46'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@6a9d572_47'/>
+47
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@6a9d572_47'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    public boolean isHitler() {</span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@6a9d572_48'/>
+48
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@6a9d572_48'>2</a>
+<span>
+1. isHitler : replaced boolean return with false for game/datastructures/Player::isHitler &rarr; KILLED<br/>
+2. isHitler : replaced boolean return with true for game/datastructures/Player::isHitler &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>        return this.id.equals(Identity.HITLER);</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@6a9d572_49'/>
+49
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@6a9d572_49'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    }</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@6a9d572_50'/>
+50
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@6a9d572_50'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@6a9d572_51'/>
+51
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@6a9d572_51'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    public void kill() {</span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@6a9d572_52'/>
+52
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@6a9d572_52'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>        isAlive = false;</span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@6a9d572_53'/>
+53
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@6a9d572_53'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>    }</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@6a9d572_54'/>
+54
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@6a9d572_54'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@6a9d572_55'/>
+55
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@6a9d572_55'>2</a>
+<span>
+1. isAlive : replaced boolean return with false for game/datastructures/Player::isAlive &rarr; KILLED<br/>
+2. isAlive : replaced boolean return with true for game/datastructures/Player::isAlive &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>    public boolean isAlive() { return this.isAlive; }</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@6a9d572_56'/>
+56
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@6a9d572_56'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@6a9d572_57'/>
+57
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@6a9d572_57'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>    public void investigate() { investigated = true; }</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@6a9d572_58'/>
+58
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@6a9d572_58'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@6a9d572_59'/>
+59
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@6a9d572_59'>2</a>
+<span>
+1. hasBeenInvestigated : replaced boolean return with false for game/datastructures/Player::hasBeenInvestigated &rarr; KILLED<br/>
+2. hasBeenInvestigated : replaced boolean return with true for game/datastructures/Player::hasBeenInvestigated &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>    public boolean hasBeenInvestigated() { return this.investigated; }</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@6a9d572_60'/>
+60
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@6a9d572_60'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@6a9d572_61'/>
+61
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@6a9d572_61'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    /**</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@6a9d572_62'/>
+62
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@6a9d572_62'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * @return true if the player is fascist or hitler.</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@6a9d572_63'/>
+63
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@6a9d572_63'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     */</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@6a9d572_64'/>
+64
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@6a9d572_64'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    public boolean isFascist() {</span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@6a9d572_65'/>
+65
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@6a9d572_65'>3</a>
+<span>
+1. isFascist : replaced boolean return with true for game/datastructures/Player::isFascist &rarr; KILLED<br/>
+2. isFascist : negated conditional &rarr; KILLED<br/>
+3. isFascist : negated conditional &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>        return this.id.equals(Identity.HITLER) || this.id.equals(Identity.FASCIST);</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@6a9d572_66'/>
+66
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@6a9d572_66'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    }</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@6a9d572_67'/>
+67
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@6a9d572_67'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>}</span></pre></td></tr>
+
+
+
+<tr><td></td><td></td><td><h2>Mutations</h2></td></tr>
+
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@6a9d572_33'>33</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@6a9d572_33'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>getUsername<br/><b>Killed by : </b>game.datastructures.PlayerTest.[engine:junit-jupiter]/[class:game.datastructures.PlayerTest]/[method:testGetUsername()]</span></span> replaced return value with &#34;&#34; for game/datastructures/Player::getUsername &rarr; KILLED</p> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@6a9d572_48'>48</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@6a9d572_48'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>isHitler<br/><b>Killed by : </b>game.datastructures.PlayerTest.[engine:junit-jupiter]/[class:game.datastructures.PlayerTest]/[method:testIsHitlerTrue()]</span></span> replaced boolean return with false for game/datastructures/Player::isHitler &rarr; KILLED</p> <p class='KILLED'><span class='pop'>2.<span><b>2</b><br/><b>Location : </b>isHitler<br/><b>Killed by : </b>game.datastructures.PlayerTest.[engine:junit-jupiter]/[class:game.datastructures.PlayerTest]/[method:testIsHitlerfalse()]</span></span> replaced boolean return with true for game/datastructures/Player::isHitler &rarr; KILLED</p> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@6a9d572_55'>55</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@6a9d572_55'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>isAlive<br/><b>Killed by : </b>game.datastructures.PlayerTest.[engine:junit-jupiter]/[class:game.datastructures.PlayerTest]/[method:testIsAliveTrue()]</span></span> replaced boolean return with false for game/datastructures/Player::isAlive &rarr; KILLED</p> <p class='KILLED'><span class='pop'>2.<span><b>2</b><br/><b>Location : </b>isAlive<br/><b>Killed by : </b>game.datastructures.PlayerTest.[engine:junit-jupiter]/[class:game.datastructures.PlayerTest]/[method:testKill()]</span></span> replaced boolean return with true for game/datastructures/Player::isAlive &rarr; KILLED</p> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@6a9d572_59'>59</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@6a9d572_59'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>hasBeenInvestigated<br/><b>Killed by : </b>game.datastructures.PlayerTest.[engine:junit-jupiter]/[class:game.datastructures.PlayerTest]/[method:testInvestigate()]</span></span> replaced boolean return with false for game/datastructures/Player::hasBeenInvestigated &rarr; KILLED</p> <p class='KILLED'><span class='pop'>2.<span><b>2</b><br/><b>Location : </b>hasBeenInvestigated<br/><b>Killed by : </b>game.datastructures.PlayerTest.[engine:junit-jupiter]/[class:game.datastructures.PlayerTest]/[method:testHasBeenInvestigatedFalse()]</span></span> replaced boolean return with true for game/datastructures/Player::hasBeenInvestigated &rarr; KILLED</p> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@6a9d572_65'>65</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@6a9d572_65'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>isFascist<br/><b>Killed by : </b>game.datastructures.PlayerTest.[engine:junit-jupiter]/[class:game.datastructures.PlayerTest]/[method:testisFascistFalse()]</span></span> replaced boolean return with true for game/datastructures/Player::isFascist &rarr; KILLED</p> <p class='KILLED'><span class='pop'>2.<span><b>2</b><br/><b>Location : </b>isFascist<br/><b>Killed by : </b>game.datastructures.PlayerTest.[engine:junit-jupiter]/[class:game.datastructures.PlayerTest]/[method:testisFascistHilter()]</span></span> negated conditional &rarr; KILLED</p> <p class='KILLED'><span class='pop'>3.<span><b>3</b><br/><b>Location : </b>isFascist<br/><b>Killed by : </b>game.datastructures.PlayerTest.[engine:junit-jupiter]/[class:game.datastructures.PlayerTest]/[method:testisFascist()]</span></span> negated conditional &rarr; KILLED</p> 
+</td>
+</tr>
+
+</table>
+
+
+<h2>Active mutators</h2>
+<ul>
+<li class='mutator'>BOOLEAN_FALSE_RETURN</li>
+<li class='mutator'>BOOLEAN_TRUE_RETURN</li>
+<li class='mutator'>CONDITIONALS_BOUNDARY_MUTATOR</li>
+<li class='mutator'>EMPTY_RETURN_VALUES</li>
+<li class='mutator'>INCREMENTS_MUTATOR</li>
+<li class='mutator'>INVERT_NEGS_MUTATOR</li>
+<li class='mutator'>MATH_MUTATOR</li>
+<li class='mutator'>NEGATE_CONDITIONALS_MUTATOR</li>
+<li class='mutator'>NULL_RETURN_VALUES</li>
+<li class='mutator'>PRIMITIVE_RETURN_VALS_MUTATOR</li>
+<li class='mutator'>VOID_METHOD_CALL_MUTATOR</li>
+
+</ul>
+
+<h2>Tests examined</h2>
+<ul>
+<li>game.SecretHitlerGameTest.[engine:junit-jupiter]/[class:game.SecretHitlerGameTest]/[method:presidentialVetoIllegalState()] (8 ms)</li><li>game.SecretHitlerGameTest.[engine:junit-jupiter]/[class:game.SecretHitlerGameTest]/[method:nominateChancellorKilled()] (8 ms)</li><li>game.SecretHitlerGameTest.[engine:junit-jupiter]/[class:game.SecretHitlerGameTest]/[method:presidentialVeto()] (8 ms)</li><li>game.SecretHitlerGameTest.[engine:junit-jupiter]/[class:game.SecretHitlerGameTest]/[method:chancellorEnactPolicyIllegalState()] (8 ms)</li><li>game.SecretHitlerGameTest.[engine:junit-jupiter]/[class:game.SecretHitlerGameTest]/[method:presidentDiscardPolicyIndexOutOfBoundMax()] (6 ms)</li><li>game.SecretHitlerGameTest.[engine:junit-jupiter]/[class:game.SecretHitlerGameTest]/[method:registerVoteWrongState()] (14 ms)</li><li>game.datastructures.PlayerTest.[engine:junit-jupiter]/[class:game.datastructures.PlayerTest]/[method:testisFascistHilter()] (4 ms)</li><li>game.SecretHitlerGameTest.[engine:junit-jupiter]/[class:game.SecretHitlerGameTest]/[method:registerVoteVoteTwice()] (14 ms)</li><li>game.SecretHitlerGameTest.[engine:junit-jupiter]/[class:game.SecretHitlerGameTest]/[method:newGameNotStarted()] (7 ms)</li><li>game.SecretHitlerGameTest.[engine:junit-jupiter]/[class:game.SecretHitlerGameTest]/[method:registerVoteNotApproved()] (11 ms)</li><li>game.SecretHitlerGameTest.[engine:junit-jupiter]/[class:game.SecretHitlerGameTest]/[method:getPresidentLegislativeChoices()] (7 ms)</li><li>game.SecretHitlerGameTest.[engine:junit-jupiter]/[class:game.SecretHitlerGameTest]/[method:getState()] (13 ms)</li><li>game.SecretHitlerGameTest.[engine:junit-jupiter]/[class:game.SecretHitlerGameTest]/[method:chancellorEnactPolicyNegativeIndex()] (9 ms)</li><li>game.SecretHitlerGameTest.[engine:junit-jupiter]/[class:game.SecretHitlerGameTest]/[method:chancellorEnactPolicyMax()] (9 ms)</li><li>game.SecretHitlerGameTest.[engine:junit-jupiter]/[class:game.SecretHitlerGameTest]/[method:presidentDiscardPolicy()] (6 ms)</li><li>game.datastructures.PlayerTest.[engine:junit-jupiter]/[class:game.datastructures.PlayerTest]/[method:testHasBeenInvestigatedFalse()] (4 ms)</li><li>game.SecretHitlerGameTest.[engine:junit-jupiter]/[class:game.SecretHitlerGameTest]/[method:newGameLessThanMinPlayer()] (7 ms)</li><li>game.SecretHitlerGameTest.[engine:junit-jupiter]/[class:game.SecretHitlerGameTest]/[method:executePlayer()] (6 ms)</li><li>game.datastructures.PlayerTest.[engine:junit-jupiter]/[class:game.datastructures.PlayerTest]/[method:testisFascist()] (4 ms)</li><li>game.SecretHitlerGameTest.[engine:junit-jupiter]/[class:game.SecretHitlerGameTest]/[method:nominateChancellorIllegalState()] (6 ms)</li><li>game.SecretHitlerGameTest.[engine:junit-jupiter]/[class:game.SecretHitlerGameTest]/[method:newGameMinPlayer()] (6 ms)</li><li>game.SecretHitlerGameTest.[engine:junit-jupiter]/[class:game.SecretHitlerGameTest]/[method:electNextPresident()] (8 ms)</li><li>game.datastructures.PlayerTest.[engine:junit-jupiter]/[class:game.datastructures.PlayerTest]/[method:testInvestigate()] (6 ms)</li><li>game.SecretHitlerGameTest.[engine:junit-jupiter]/[class:game.SecretHitlerGameTest]/[method:chancellorEnactPolicy()] (16 ms)</li><li>game.SecretHitlerGameTest.[engine:junit-jupiter]/[class:game.SecretHitlerGameTest]/[method:investigatePlayer()] (8 ms)</li><li>game.SecretHitlerGameTest.[engine:junit-jupiter]/[class:game.SecretHitlerGameTest]/[method:nominateChancellorLastChancellor()] (8 ms)</li><li>game.SecretHitlerGameTest.[engine:junit-jupiter]/[class:game.SecretHitlerGameTest]/[method:newGameMaxPlayer()] (7 ms)</li><li>game.SecretHitlerGameTest.[engine:junit-jupiter]/[class:game.SecretHitlerGameTest]/[method:registerVotePlayerNotInGame()] (16 ms)</li><li>game.datastructures.PlayerTest.[engine:junit-jupiter]/[class:game.datastructures.PlayerTest]/[method:testisFascistFalse()] (5 ms)</li><li>game.datastructures.PlayerTest.[engine:junit-jupiter]/[class:game.datastructures.PlayerTest]/[method:testIsHitlerTrue()] (4 ms)</li><li>game.datastructures.PlayerTest.[engine:junit-jupiter]/[class:game.datastructures.PlayerTest]/[method:testKill()] (4 ms)</li><li>game.datastructures.PlayerTest.[engine:junit-jupiter]/[class:game.datastructures.PlayerTest]/[method:testSetIdentity()] (4 ms)</li><li>game.SecretHitlerGameTest.[engine:junit-jupiter]/[class:game.SecretHitlerGameTest]/[method:getPresidentLegislativeChoicesWrongState()] (9 ms)</li><li>game.SecretHitlerGameTest.[engine:junit-jupiter]/[class:game.SecretHitlerGameTest]/[method:presidentDiscardPolicyIndexOutOfBound()] (8 ms)</li><li>game.SecretHitlerGameTest.[engine:junit-jupiter]/[class:game.SecretHitlerGameTest]/[method:chancellorVetoIllegalState()] (7 ms)</li><li>game.datastructures.PlayerTest.[engine:junit-jupiter]/[class:game.datastructures.PlayerTest]/[method:testIsAliveTrue()] (5 ms)</li><li>game.SecretHitlerGameTest.[engine:junit-jupiter]/[class:game.SecretHitlerGameTest]/[method:registerVoteLeadsFascistVictory()] (11 ms)</li><li>game.SecretHitlerGameTest.[engine:junit-jupiter]/[class:game.SecretHitlerGameTest]/[method:presidentDiscardPolicyIndexOutOfBoundNegative()] (8 ms)</li><li>game.SecretHitlerGameTest.[engine:junit-jupiter]/[class:game.SecretHitlerGameTest]/[method:presidentDiscardPolicyIllegalState()] (7 ms)</li><li>game.SecretHitlerGameTest.[engine:junit-jupiter]/[class:game.SecretHitlerGameTest]/[method:chancellorVeto()] (9 ms)</li><li>game.datastructures.PlayerTest.[engine:junit-jupiter]/[class:game.datastructures.PlayerTest]/[method:testGetUsername()] (4 ms)</li><li>game.SecretHitlerGameTest.[engine:junit-jupiter]/[class:game.SecretHitlerGameTest]/[method:nominateChancellor()] (6 ms)</li><li>game.SecretHitlerGameTest.[engine:junit-jupiter]/[class:game.SecretHitlerGameTest]/[method:chancellorEnactPolicyIndexOutOfBound()] (7 ms)</li><li>game.SecretHitlerGameTest.[engine:junit-jupiter]/[class:game.SecretHitlerGameTest]/[method:newGameMoreThanMaxPlayer()] (7 ms)</li><li>game.SecretHitlerGameTest.[engine:junit-jupiter]/[class:game.SecretHitlerGameTest]/[method:presidentDiscardPolicyIndexOutOfBoundMin()] (9 ms)</li><li>game.SecretHitlerGameTest.[engine:junit-jupiter]/[class:game.SecretHitlerGameTest]/[method:chancellorEnactPolicyMin()] (9 ms)</li><li>game.SecretHitlerGameTest.[engine:junit-jupiter]/[class:game.SecretHitlerGameTest]/[method:endPresidentialTermWrongState()] (7 ms)</li><li>game.datastructures.PlayerTest.[engine:junit-jupiter]/[class:game.datastructures.PlayerTest]/[method:testIsHitlerfalse()] (5 ms)</li><li>game.SecretHitlerGameTest.[engine:junit-jupiter]/[class:game.SecretHitlerGameTest]/[method:registerVoteSuccessful()] (22 ms)</li><li>game.datastructures.PlayerTest.[engine:junit-jupiter]/[class:game.datastructures.PlayerTest]/[method:testHasBeenInvestigatedTrue()] (7 ms)</li><li>game.datastructures.PlayerTest.[engine:junit-jupiter]/[class:game.datastructures.PlayerTest]/[method:testIsAliveFalse()] (5 ms)</li><li>game.SecretHitlerGameTest.[engine:junit-jupiter]/[class:game.SecretHitlerGameTest]/[method:endPresidentialTerm()] (8 ms)</li><li>game.SecretHitlerGameTest.[engine:junit-jupiter]/[class:game.SecretHitlerGameTest]/[method:endPeek()] (6 ms)</li><li>game.SecretHitlerGameTest.[engine:junit-jupiter]/[class:game.SecretHitlerGameTest]/[method:nominateChancellorNotExisting()] (6 ms)</li><li>game.SecretHitlerGameTest.[engine:junit-jupiter]/[class:game.SecretHitlerGameTest]/[method:endPresidentialTermBranch()] (7 ms)</li><li>game.SecretHitlerGameTest.[engine:junit-jupiter]/[class:game.SecretHitlerGameTest]/[method:registerVoteNotFinished()] (12 ms)</li><li>game.SecretHitlerGameTest.[engine:junit-jupiter]/[class:game.SecretHitlerGameTest]/[method:hasPlayer()] (7 ms)</li>
+</ul>
+
+<br/>
+
+Report generated by <a href='http://pitest.org'>PIT</a> 1.5.2
+
+</body>
+</html>
